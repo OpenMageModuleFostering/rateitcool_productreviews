@@ -5,7 +5,11 @@ var RateItCoolAPI = (function($){
       _version = '1.0.0',
       _limit = 3,
       _jQuery = $,
-      _oldjQuery = $;
+      _oldjQuery = $,
+      _securityText = '',
+      _labels = {},
+      _server = 'https://api.rateit.cool/';
+//      _server = 'http://localhost:8080/';
 
   var _zerofilledGtin = function(n,w) {
     if (n.length < 13) {
@@ -19,15 +23,27 @@ var RateItCoolAPI = (function($){
 
   var _ratingsProductList = function () {
     var productlistSpans = _jQuery('.rate-it-cool-product');
+
     if (productlistSpans && productlistSpans.length > 0) {
 
       var gpntype = '',
           gpnvalues = {},
           gpnvalue = '',
-          error = true;
+          language = '',
+          error = true,
+          formId = undefined;
+
       for ( var i = 0; i < productlistSpans.length; i++ ) {
         if (_jQuery(productlistSpans[ i ]).attr('data-gpntype') !== undefined) {
-          gpntype =  _jQuery(productlistSpans[ i ]).attr('data-gpntype');
+          gpntype = _jQuery(productlistSpans[ i ]).attr('data-gpntype');
+          if (gpntype === '') {
+            gpntype = _username;
+          }
+        }
+        if (_jQuery(productlistSpans[ i ]).attr('data-language') !== undefined) {
+          if (language === '') {
+            language =  _jQuery(productlistSpans[ i ]).attr('data-language');
+          }
         }
         if (_jQuery(productlistSpans[ i ]).attr('data-gpnvalue') !== undefined) {
           gpnvalue = _jQuery(productlistSpans[ i ]).attr('data-gpnvalue');
@@ -43,12 +59,15 @@ var RateItCoolAPI = (function($){
             error = false;
           }
         }
+        if (_jQuery(productlistSpans[ i ]).attr('data-form') !== undefined) {
+          formId = _jQuery(productlistSpans[ i ]).attr('data-form');
+        }
       }
       if (!error) {
         _jQuery.each(gpnvalues, function(gpntype, values) {
           if (values.length > 0) {
             _jQuery.ajax({
-              url : 'https://api.rateit.cool/stars/' + gpntype + '/' + values.join(','),
+              url : _server + 'stars/' + gpntype + '/' + values.join(',') + '/' + language,
               method: 'GET',
               dataType : 'json',
               crossDomain: true,
@@ -64,6 +83,45 @@ var RateItCoolAPI = (function($){
                     destinationElement.find('.rate-it-cool-review-counts').text(oneRatingResponse.total);
                     destinationElement.find('.rate-it-cool-review-summary').removeClass('rate-it-cool-review-summary-empty').attr('style','width: ' + Number((oneRatingResponse.summary * 20).toFixed(0)) + '%;');
                     destinationElement.find('.rateit-cool-review-link').show();
+
+                    if (formId !== undefined) {
+                      // feedback form
+                      if (oneRatingResponse.details !== undefined) {
+                        if (oneRatingResponse.details.detail1 !== undefined) {
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail1 .label').text(oneRatingResponse.labels.detail1);
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail1').show();
+                        }
+                        if (oneRatingResponse.details.detail2 !== undefined) {
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail2 .label').text(oneRatingResponse.labels.detail2);
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail2').show();
+                        }
+                        if (oneRatingResponse.details.detail3 !== undefined) {
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail3 .label').text(oneRatingResponse.labels.detail3);
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail3').show();
+                        }
+                        if (oneRatingResponse.details.detail4 !== undefined) {
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail4 .label').text(oneRatingResponse.labels.detail4);
+                          _jQuery('form[name=' + formId + ']').find('.reviewDetail4').show();
+                        }
+                      }
+                    } else if (oneRatingResponse.details !== undefined) {
+                      if (oneRatingResponse.details.detail1 !== undefined) {
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail1 .label').text(oneRatingResponse.labels.detail1);
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail1').show();
+                      }
+                      if (oneRatingResponse.details.detail2 !== undefined) {
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail2 .label').text(oneRatingResponse.labels.detail2);
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail2').show();
+                      }
+                      if (oneRatingResponse.details.detail3 !== undefined) {
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail3 .label').text(oneRatingResponse.labels.detail3);
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail3').show();
+                      }
+                      if (oneRatingResponse.details.detail4 !== undefined) {
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail4 .label').text(oneRatingResponse.labels.detail4);
+                        _jQuery('.rate-it-cool-feedback-form').find('.reviewDetail4').show();
+                      }
+                    }
                   });
                 }
               }
@@ -78,12 +136,20 @@ var RateItCoolAPI = (function($){
 
     var productlistSpans = _jQuery('.rate-it-cool-product-detail'),
         gpntype = '',
-        gpnvalue = '';
+        gpnvalue = '',
+        language = '',
+        template = '';
 
     if (productlistSpans && productlistSpans.length > 0) {
 
+      if (_jQuery(productlistSpans[0]).attr('data-language') !== undefined) {
+        language = _jQuery(productlistSpans[0]).attr('data-language');
+      }
       if (_jQuery(productlistSpans[0]).attr('data-gpntype') !== undefined) {
         gpntype =  _jQuery(productlistSpans[0]).attr('data-gpntype');
+        if (gpntype === '') {
+          gpntype = _username;
+        }
       }
       if (_jQuery(productlistSpans[0]).attr('data-gpnvalue') !== undefined) {
         gpnvalue = _jQuery(productlistSpans[0]).attr('data-gpnvalue');
@@ -91,7 +157,7 @@ var RateItCoolAPI = (function($){
       var destinationElement = _jQuery(productlistSpans[0]);
       if (gpntype && gpnvalue) {
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/stars/' + gpntype + '/' + gpnvalue,
+          url : _server + 'stars/' + gpntype + '/' + gpnvalue + '/' + language,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -103,9 +169,55 @@ var RateItCoolAPI = (function($){
           success : function(data) {
             if (data.length > 0) {
               var oneRatingResponse = data[0];
+              if (oneRatingResponse.details !== undefined) {
+                if (oneRatingResponse.details.detail1 !== undefined) {
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail1 .label').text(oneRatingResponse.labels.detail1);
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail1').show();
+                }
+                if (oneRatingResponse.details.detail2 !== undefined) {
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail2 .label').text(oneRatingResponse.labels.detail2);
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail2').show();
+                }
+                if (oneRatingResponse.details.detail3 !== undefined) {
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail3 .label').text(oneRatingResponse.labels.detail3);
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail3').show();
+                }
+                if (oneRatingResponse.details.detail4 !== undefined) {
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail4 .label').text(oneRatingResponse.labels.detail4);
+                  _jQuery('#feedbackform.rate-it-cool-feedback-form').find('.reviewDetail4').show();
+                }
+              }
+              template = _jQuery('.rate-it-cool-stars-detail-table').html();
+              if (oneRatingResponse.total > 0) {
+                _jQuery('.rate-it-cool-stars-detail-table').html(template
+                  .split('$review.summary').join(Number((oneRatingResponse.summary).toFixed(0)))
+                  .split('$review.total').join(oneRatingResponse.total)
+                  .split('$review.star5').join(oneRatingResponse.stars.five)
+                  .split('$review.star4').join(oneRatingResponse.stars.four)
+                  .split('$review.star3').join(oneRatingResponse.stars.three)
+                  .split('$review.star2').join(oneRatingResponse.stars.two)
+                  .split('$review.star1').join(oneRatingResponse.stars.one)
+                  .split('$details.display').join((oneRatingResponse.details == undefined || oneRatingResponse.details.detail1 == undefined ? 'display:none;':''))
+                  .split('$details.total').join((oneRatingResponse.details == undefined || oneRatingResponse.details.total !== undefined ? oneRatingResponse.details.total:0))
+                  .split('$details.percent').join((oneRatingResponse.details == undefined || oneRatingResponse.details.total !== undefined ? Number(oneRatingResponse.details.total/(oneRatingResponse.total/100).toFixed(2)) :0))
+                  .split('$details.detail1.display').join((oneRatingResponse.details == undefined || oneRatingResponse.details.detail1 == undefined ? 'display:none;':''))
+                  .split('$details.detail2.display').join((oneRatingResponse.details == undefined || oneRatingResponse.details.detail2 == undefined ? 'display:none;':''))
+                  .split('$details.detail3.display').join((oneRatingResponse.details == undefined || oneRatingResponse.details.detail3 == undefined ? 'display:none;':''))
+                  .split('$details.detail4.display').join((oneRatingResponse.details == undefined || oneRatingResponse.details.detail4 == undefined ? 'display:none;':''))
+                  .split('$details.detail1.title').join((oneRatingResponse.labels.detail1 !== undefined ? oneRatingResponse.labels.detail1:''))
+                  .split('$details.detail2.title').join((oneRatingResponse.labels.detail2 !== undefined ? oneRatingResponse.labels.detail2:''))
+                  .split('$details.detail3.title').join((oneRatingResponse.labels.detail3 !== undefined ? oneRatingResponse.labels.detail3:''))
+                  .split('$details.detail4.title').join((oneRatingResponse.labels.detail4 !== undefined ? oneRatingResponse.labels.detail4:''))
+                  .split('$review.details.detail1').join( (Number(oneRatingResponse.details.detail1)*20).toFixed(0) )
+                  .split('$review.details.detail2').join( (Number(oneRatingResponse.details.detail2)*20).toFixed(0) )
+                  .split('$review.details.detail3').join( (Number(oneRatingResponse.details.detail3)*20).toFixed(0) )
+                  .split('$review.details.detail4').join( (Number(oneRatingResponse.details.detail4)*20).toFixed(0) )
+                );
+
+                destinationElement.find('.rate-it-cool-show-stars').show();
+              }
               destinationElement.find('.rate-it-cool-review-counts').text(oneRatingResponse.total);
               destinationElement.find('.rate-it-cool-review-summary').removeClass('rate-it-cool-review-summary-empty').attr('style','width: ' + Number((oneRatingResponse.summary * 20).toFixed(0)) + '%;');
-              destinationElement.find('.rateit-cool-review-link').show();
             }
           }
         });
@@ -118,11 +230,15 @@ var RateItCoolAPI = (function($){
         gpnvalue = '',
         language = '',
         templateOneFeedback = _jQuery('#rate-it-cool-product-feedbacks-template .feedbackElement').html(),
+        templateMissingFeedback = _jQuery('#rate-it-cool-product-feedbacks-template .missingFeedback').html(),
+        templateFeedbackForm = _jQuery('#rate-it-cool-product-feedbacks-template .feedbackElements #feedbackform').html(),
         templateList = _jQuery('#rate-it-cool-product-feedbacks-template .feedbackElements').html();
-
     if (productfeedbackSpans.length > 0) {
       if (_jQuery(productfeedbackSpans[0]).attr('data-gpntype') !== undefined) {
         gpntype =  _jQuery(productfeedbackSpans[0]).attr('data-gpntype');
+        if (gpntype === '') {
+          gpntype = _username;
+        }
       }
       if (_jQuery(productfeedbackSpans[0]).attr('data-gpnvalue') !== undefined) {
         gpnvalue = _jQuery(productfeedbackSpans[0]).attr('data-gpnvalue');
@@ -141,7 +257,7 @@ var RateItCoolAPI = (function($){
       if (gpntype && gpnvalue && language) {
 
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + '&full=true' + extendedString,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -161,6 +277,10 @@ var RateItCoolAPI = (function($){
               if (data.region > 0) {
                 counts = data.region;
               }
+              _labels = data.overview.labels;
+              if (data.overview.details == undefined) {
+                data.overview.details = {};
+              }
               templateList = templateList.replace('$five', data.overview.stars.five)
                                           .replace('$four', data.overview.stars.four)
                                           .replace('$three', data.overview.stars.three)
@@ -169,6 +289,22 @@ var RateItCoolAPI = (function($){
                                           .replace('$total.all', data.total.all)
                                           .replace('$total.language', data.total.language)
                                           .replace('$total.region', data.total.region)
+                                          .replace('$overview.total', data.overview.total)
+                                          .split('$detail.show').join( (data.overview.details.detail1 !== undefined?'':'display:none;') )
+                                          .replace('$details.total', (data.overview.details == undefined || data.overview.details.total !== undefined ? data.overview.details.total : 0))
+                                          .replace('$details.percent', (data.overview.details == undefined || data.overview.details.total !== undefined ? Number(data.overview.details.total/(data.overview.total/100).toFixed(2)) :0))
+                                          .replace('$details.detail1.display', (data.overview.details == undefined || data.overview.details.detail1 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail2.display', (data.overview.details == undefined || data.overview.details.detail2 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail3.display', (data.overview.details == undefined || data.overview.details.detail3 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail4.display', (data.overview.details == undefined || data.overview.details.detail4 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail1.title', (data.overview.labels.detail1 !== undefined ? data.overview.labels.detail1:''))
+                                          .replace('$details.detail2.title', (data.overview.labels.detail2 !== undefined ? data.overview.labels.detail2:''))
+                                          .replace('$details.detail3.title', (data.overview.labels.detail3 !== undefined ? data.overview.labels.detail3:''))
+                                          .replace('$details.detail4.title', (data.overview.labels.detail4 !== undefined ? data.overview.labels.detail4:''))
+                                          .split('$detail.detail1').join( Number((data.overview.details.detail1 !== undefined?(data.overview.details.detail1*20):0)).toFixed(0) )
+                                          .split('$detail.detail2').join( Number((data.overview.details.detail2 !== undefined?(data.overview.details.detail2*20):0)).toFixed(0) )
+                                          .split('$detail.detail3').join( Number((data.overview.details.detail3 !== undefined?(data.overview.details.detail3*20):0)).toFixed(0) )
+                                          .split('$detail.detail4').join( Number((data.overview.details.detail4 !== undefined?(data.overview.details.detail4*20):0)).toFixed(0) )
                                           .replace('$count', data.elements.length)
                                           .replace('$showNewtLink', (counts > data.elements.length?'block':'none'))
                                           .split('$gpntype').join(data.gpntype)
@@ -178,20 +314,60 @@ var RateItCoolAPI = (function($){
               data.elements.forEach(function(feedback) {
                 // create elemnt from template
                 var oneFeedback = templateOneFeedback;
+                if (feedback.details == undefined) {
+                  feedback.details = {};
+                }
                 oneFeedback = oneFeedback.replace('$review.stars', (feedback.stars * 20))
-                                          .replace('$review.time', new Date(feedback.time).toLocaleString())
+                                          .replace('$review.time', new Date(feedback.time).toLocaleDateString())
                                           .replace('$review.title', feedback.title)
                                           .replace('$review.content', feedback.content)
                                           .split('$review.id').join(feedback._id)
                                           .split('$review.gpntype').join(data.gpntype)
                                           .split('$review.gpnvalue').join(data.gpnvalue)
                                           .split('$review.language').join(feedback.language + '_' + feedback.region)
+                                          .split('$review.detail.show').join( (feedback.details !== undefined && feedback.details.detail1 !== undefined?'':'display:none;'))
+                                          .replace('$details.detail1.display', (feedback.details == undefined || feedback.details.detail1 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail2.display', (feedback.details == undefined || feedback.details.detail2 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail3.display', (feedback.details == undefined || feedback.details.detail3 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail4.display', (feedback.details == undefined || feedback.details.detail4 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail1.title', (_labels.detail1 !== undefined ? _labels.detail1:''))
+                                          .replace('$details.detail2.title', (_labels.detail2 !== undefined ? _labels.detail2:''))
+                                          .replace('$details.detail3.title', (_labels.detail3 !== undefined ? _labels.detail3:''))
+                                          .replace('$details.detail4.title', (_labels.detail4 !== undefined ? _labels.detail4:''))
+                                          .split('$review.detail.detail1').join( (feedback.details.detail1 !== undefined?(feedback.details.detail1*20):0))
+                                          .split('$review.detail.detail2').join( (feedback.details.detail2 !== undefined?(feedback.details.detail2*20):0))
+                                          .split('$review.detail.detail3').join( (feedback.details.detail3 !== undefined?(feedback.details.detail3*20):0))
+                                          .split('$review.detail.detail4').join( (feedback.details.detail4 !== undefined?(feedback.details.detail4*20):0))
+                                          .split('$review.source').join(feedback.source)
+                                          .split('$review.verified_source').join((feedback.source === 'verified'?'display:block;':'display:none;'))
+                                          .split('$review.public_source').join((feedback.source === 'public'?'display:block;':'display:none;'))
+                                          .split('$review.mobile_source').join((feedback.source === 'mobile'?'display:block;':'display:none;'))
                                           .split('$review.positive').join(feedback.positive)
                                           .split('$review.negative').join(feedback.negative);
 
                 feedbackElements.push(oneFeedback);
               });
               destinationElement.html(templateList.replace('$list',feedbackElements.join('')));
+            } else {
+              destinationElement.html(templateMissingFeedback.split('$feedbackForm').join(templateFeedbackForm));
+              if (data.overview.details !== undefined) {
+                if (data.overview.details.detail1 !== undefined) {
+                  destinationElement.find('.reviewDetail1 .label').text(data.overview.labels.detail1);
+                  destinationElement.find('.reviewDetail1').show();
+                }
+                if (data.overview.details.detail2 !== undefined) {
+                  destinationElement.find('.reviewDetail2 .label').text(data.overview.labels.detail2);
+                  destinationElement.find('.reviewDetail2').show();
+                }
+                if (data.overview.details.detail3 !== undefined) {
+                  destinationElement.find('.reviewDetail3 .label').text(data.overview.labels.detail3);
+                  destinationElement.find('.reviewDetail3').show();
+                }
+                if (data.overview.details.detail4 !== undefined) {
+                  destinationElement.find('.reviewDetail4 .label').text(data.overview.labels.detail4);
+                  destinationElement.find('.reviewDetail4').show();
+                }
+              }
             }
           }
         });
@@ -212,6 +388,9 @@ var RateItCoolAPI = (function($){
     if (productfeedbackSpans.length > 0) {
       if (_jQuery(productfeedbackSpans[0]).attr('data-gpntype') !== undefined) {
         gpntype =  _jQuery(productfeedbackSpans[0]).attr('data-gpntype');
+        if (gpntype === '') {
+          gpntype = _username;
+        }
       }
       if (_jQuery(productfeedbackSpans[0]).attr('data-gpnvalue') !== undefined) {
         gpnvalue = _jQuery(productfeedbackSpans[0]).attr('data-gpnvalue');
@@ -235,7 +414,7 @@ var RateItCoolAPI = (function($){
       if (gpntype && gpnvalue && language) {
 
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -263,18 +442,38 @@ var RateItCoolAPI = (function($){
             if (data.elements && data.elements.length > 0) {
 
               var feedbackElements = [];
-
+              _labels = data.overview.labels;
               data.elements.forEach(function(feedback) {
                 // create elemnt from template
                 var oneFeedback = templateOneFeedback;
+                if (feedback.details == undefined) {
+                  feedback.details = {};
+                }
                 oneFeedback = oneFeedback.replace('$review.stars', (feedback.stars * 20))
-                                          .replace('$review.time', new Date(feedback.time).toLocaleString())
+                                          .replace('$review.time', new Date(feedback.time).toLocaleDateString())
                                           .replace('$review.title', feedback.title)
                                           .replace('$review.content', feedback.content)
                                           .split('$review.id').join(feedback._id)
                                           .split('$review.gpntype').join(data.gpntype)
                                           .split('$review.gpnvalue').join(data.gpnvalue)
                                           .split('$review.language').join(feedback.language + '_' + feedback.region)
+                                          .split('$review.detail.show').join( (feedback.details.detail1 !== undefined?'':'display:none;'))
+                                          .replace('$details.detail1.display', (feedback.details == undefined || feedback.details.detail1 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail2.display', (feedback.details == undefined || feedback.details.detail2 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail3.display', (feedback.details == undefined || feedback.details.detail3 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail4.display', (feedback.details == undefined || feedback.details.detail4 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail1.title', (_labels.detail1 !== undefined ? _labels.detail1:''))
+                                          .replace('$details.detail2.title', (_labels.detail2 !== undefined ? _labels.detail2:''))
+                                          .replace('$details.detail3.title', (_labels.detail3 !== undefined ? _labels.detail3:''))
+                                          .replace('$details.detail4.title', (_labels.detail4 !== undefined ? _labels.detail4:''))
+                                          .split('$review.detail.detail1').join( (feedback.details.detail1 !== undefined?feedback.details.detail1:0))
+                                          .split('$review.detail.detail2').join( (feedback.details.detail2 !== undefined?feedback.details.detail2:0))
+                                          .split('$review.detail.detail3').join( (feedback.details.detail3 !== undefined?feedback.details.detail3:0))
+                                          .split('$review.detail.detail4').join( (feedback.details.detail4 !== undefined?feedback.details.detail4:0))
+                                          .split('$review.source').join(feedback.source)
+                                          .split('$review.verified_source').join((feedback.source === 'verified'?'display:block;':'display:none;'))
+                                          .split('$review.public_source').join((feedback.source === 'public'?'display:block;':'display:none;'))
+                                          .split('$review.mobile_source').join((feedback.source === 'mobile'?'display:block;':'display:none;'))
                                           .split('$review.positive').join(feedback.positive)
                                           .split('$review.negative').join(feedback.negative);
 
@@ -292,20 +491,50 @@ var RateItCoolAPI = (function($){
   var _registerClickFeedbackSend = function() {
     _jQuery('.rateit-cool-send-feedback').delegate('a', 'click', function(e){
       e.preventDefault();
-      var gpntype = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=gpntype]').val(),
-          gpnvalue = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=gpnvalue]').val(),
-          language = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=language]').val(),
+      var _form = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']'),
+          gpntype = _form.find('[name=gpntype]').val(),
+          gpnvalue = _form.find('[name=gpnvalue]').val(),
+          language = _form.find('[name=language]').val(),
+          detail1 = parseInt(_form.find('[name=detail1]').val()),
+          detail2 = parseInt(_form.find('[name=detail2]').val()),
+          detail3 = parseInt(_form.find('[name=detail3]').val()),
+          detail4 = parseInt(_form.find('[name=detail4]').val()),
+          detail = (detail1 + detail2 + detail3 + detail4),
           feedbackElement = {
-            stars: parseInt(_jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=stars]').val()),
-            title: _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=feedbackTitle]').val(),
-            content: _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=feedbackContent]').val(),
-            recommend: (_jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=recommend]').is(':checked')?1:0)
+            stars: parseInt(_form.find('[name=stars]').val()),
+            title: _form.find('[name=feedbackTitle]').val(),
+            source: _form.find('[name=source]').val(),
+            content: _form.find('[name=feedbackContent]').val(),
+            recommend: (_form.find('[name=recommend]').is(':checked')?1:0),
+            details: {
+              detail1: detail1,
+              detail2: detail2,
+              detail3: detail3,
+              detail4: detail4
+            }
           },
-          destinationElement = _jQuery(this);
+          destinationElement = _jQuery(this),
+          securitytext = _form.find('[name=securityText]').val(),
+          formOk = true;
+      if (detail > 0) {
+        feedbackElement.stars = (detail / ((detail1 > 0?1:0) + (detail2 > 0?1:0) + (detail3 > 0?1:0) + (detail4 > 0?1:0)));
+      }
+      if (securitytext !== undefined) {
+        formOk = (securitytext === _securityText);
+        if (!formOk) {
+          _form.find('[name=securityText]').addClass('rate-it-cool-error');
+        }
+      }
+      if (feedbackElement.title == '') {
+        _form.find('[name=feedbackTitle]').addClass('rate-it-cool-error');
+      }
+      if (feedbackElement.content == '') {
+        _form.find('[name=feedbackContent]').addClass('rate-it-cool-error');
+      }
 
-      if (gpntype && gpnvalue && language && feedbackElement.title !== '' && feedbackElement.content !== '' && feedbackElement.stars > 0) {
+      if (formOk && gpntype && gpnvalue && language && feedbackElement.title !== '' && feedbackElement.content !== '' && feedbackElement.stars > 0) {
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language,
           method: 'POST',
           data: JSON.stringify(feedbackElement),
           dataType : 'json',
@@ -317,14 +546,14 @@ var RateItCoolAPI = (function($){
           },
           success: function(data) {
             _jQuery('#' + destinationElement.attr('data-formname')).removeClass('error').addClass('success');
-            _jQuery('form[name=' + destinationElement.attr('data-formname') + ']').hide();
-            _jQuery('form[name=' + destinationElement.attr('data-formname') + ']').parent().find('.rateit-cool-send-feedback-error').hide();
-            _jQuery('form[name=' + destinationElement.attr('data-formname') + ']').parent().find('.rateit-cool-send-feedback-success').show();
+            _form.hide();
+            _form.parent().find('.rateit-cool-send-feedback-error').hide();
+            _form.parent().find('.rateit-cool-send-feedback-success').show();
           },
           error: function() {
             _jQuery('#' + destinationElement.attr('data-formname')).removeClass('success').addClass('error');
-            _jQuery('form[name=' + destinationElement.attr('data-formname') + ']').parent().find('.rateit-cool-send-feedback-success').hide();
-            _jQuery('form[name=' + destinationElement.attr('data-formname') + ']').parent().find('.rateit-cool-send-feedback-error').show();
+            _form.parent().find('.rateit-cool-send-feedback-success').hide();
+            _form.parent().find('.rateit-cool-send-feedback-error').show();
           }
         });
       } else {
@@ -345,57 +574,62 @@ var RateItCoolAPI = (function($){
     // fill stars on click
     _jQuery('.rate-it-cool-feedback-form').delegate('.oneStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).parents('tr').find('.rate-it-cool-review-summary').attr('style','');
       _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('[name=stars]').val(2);
-      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('tr').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('input.stars').val(1);
+      _jQuery(this).parents('tr').find('[name=stars]').val(1);
+      _jQuery(this).parents('tr').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
     _jQuery('.rate-it-cool-feedback-form').delegate('.twoStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).parents('tr').find('.rate-it-cool-review-summary').attr('style','');
       _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('[name=stars]').val(2);
-      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('tr').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('input.stars').val(2);
+      _jQuery(this).parents('tr').find('[name=stars]').val(2);
+      _jQuery(this).parents('tr').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
     _jQuery('.rate-it-cool-feedback-form').delegate('.threeStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).parents('tr').find('.rate-it-cool-review-summary').attr('style','');
       _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('[name=stars]').val(3);
-      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('tr').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('input.stars').val(3);
+      _jQuery(this).parents('tr').find('[name=stars]').val(3);
+      _jQuery(this).parents('tr').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
     _jQuery('.rate-it-cool-feedback-form').delegate('.fourStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).parents('tr').find('.rate-it-cool-review-summary').attr('style','');
       _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('[name=stars]').val(4);
-      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('tr').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('input.stars').val(4);
+      _jQuery(this).parents('tr').find('[name=stars]').val(4);
+      _jQuery(this).parents('tr').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
     _jQuery('.rate-it-cool-feedback-form').delegate('.fiveStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).parents('tr').find('.rate-it-cool-review-summary').attr('style','');
       _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('.fiveStars .rate-it-cool-review-summary').attr('style','width:100%;');
-      _jQuery(this).parents('form').find('[name=stars]').val(5);
-      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('tr').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('.fiveStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('tr').find('input.stars').val(5);
+      _jQuery(this).parents('tr').find('[name=stars]').val(5);
+      _jQuery(this).parents('tr').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
     // fill stars on click end
   };
@@ -414,7 +648,7 @@ var RateItCoolAPI = (function($){
         thisElement.attr('data-positive', (positive+1));
         _jQuery(destinationElement).html(positive+1);
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=positive&id='+feedbackId,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=positive&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -443,7 +677,7 @@ var RateItCoolAPI = (function($){
 
       if (feedbackId && gpntype && gpnvalue && language) {
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?incorrect=1&id='+feedbackId,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?incorrect=1&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -483,7 +717,7 @@ var RateItCoolAPI = (function($){
 
       if (feedbackId && gpntype && gpnvalue && language) {
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=negative&id='+feedbackId,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=negative&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -493,6 +727,8 @@ var RateItCoolAPI = (function($){
             xhr.setRequestHeader("X-Api-Version", _version);
           },
           success : function(data) {
+            thisElement.attr('data-negative', (negative+1));
+            _jQuery(destinationElement).html(negative+1);
           }
         });
       }
@@ -514,6 +750,13 @@ var RateItCoolAPI = (function($){
               _jQuery('.rate-it-cool-product-feedbacks select[name=reorderReviews]').parent().find('.js--fancy-select-text').text(optionText);
           }
       );
+    });
+  };
+
+  var _showFeedbackFormOnClick = function() {
+    _jQuery('.rate-it-cool-product-feedbackform').delegate('a.rateit-cool-show-feedbackform-link','click',function(e) {
+      e.preventDefault();
+      _jQuery('.rate-it-cool-feedback-form').toggle('bounce');
     });
   };
 
@@ -539,7 +782,7 @@ var RateItCoolAPI = (function($){
           feedbackElements = [];
       if (gpntype && gpnvalue && language && count && extraParameter != undefined) {
         _jQuery.ajax({
-          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=5&skip=' + count + extraParameter,
+          url : _server + 'feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=5&skip=' + count + extraParameter,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -568,14 +811,34 @@ var RateItCoolAPI = (function($){
               data.elements.forEach(function(feedback) {
                 // create elemnt from template
                 var oneFeedback = templateOneFeedback;
+                if (feedback.details == undefined) {
+                  feedback.details = {};
+                }
                 oneFeedback = oneFeedback.replace('$review.stars', (feedback.stars * 20))
-                                          .replace('$review.time', new Date(feedback.time).toLocaleString())
+                                          .replace('$review.time', new Date(feedback.time).toLocaleDateString())
                                           .replace('$review.title', feedback.title)
                                           .replace('$review.content', feedback.content)
                                           .split('$review.id').join(feedback._id)
                                           .split('$review.gpntype').join(data.gpntype)
                                           .split('$review.gpnvalue').join(data.gpnvalue)
                                           .split('$review.language').join(feedback.language + '_' + feedback.region)
+                                          .split('$review.detail.show').join( (feedback.details.detail1 !== undefined?'':'display:none;'))
+                                          .replace('$details.detail1.display', (feedback.details == undefined || feedback.details.detail1 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail2.display', (feedback.details == undefined || feedback.details.detail2 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail3.display', (feedback.details == undefined || feedback.details.detail3 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail4.display', (feedback.details == undefined || feedback.details.detail4 == undefined ? 'display:none;':''))
+                                          .replace('$details.detail1.title', (_labels.detail1 !== undefined ? _labels.detail1:''))
+                                          .replace('$details.detail2.title', (_labels.detail2 !== undefined ? _labels.detail2:''))
+                                          .replace('$details.detail3.title', (_labels.detail3 !== undefined ? _labels.detail3:''))
+                                          .replace('$details.detail4.title', (_labels.detail4 !== undefined ? _labels.detail4:''))
+                                          .split('$review.detail.detail1').join( (feedback.details.detail1 !== undefined?feedback.details.detail1:0))
+                                          .split('$review.detail.detail2').join( (feedback.details.detail2 !== undefined?feedback.details.detail2:0))
+                                          .split('$review.detail.detail3').join( (feedback.details.detail3 !== undefined?feedback.details.detail3:0))
+                                          .split('$review.detail.detail4').join( (feedback.details.detail4 !== undefined?feedback.details.detail4:0))
+                                          .split('$review.source').join(feedback.source)
+                                          .split('$review.verified_source').join((feedback.source === 'verified'?'display:block;':'display:none;'))
+                                          .split('$review.public_source').join((feedback.source === 'public'?'display:block;':'display:none;'))
+                                          .split('$review.mobile_source').join((feedback.source === 'mobile'?'display:block;':'display:none;'))
                                           .split('$review.positive').join(feedback.positive)
                                           .split('$review.negative').join(feedback.negative);
                 _jQuery('.rate-it-cool-product-feedbacks .list').append(oneFeedback);
@@ -606,8 +869,12 @@ var RateItCoolAPI = (function($){
     _sendNotHelpfulOnClick();
     _showFeedbacksWithStarsOnClick();
     _showMoreFeedbacksOnClick();
+    _showFeedbackFormOnClick();
     _sendIncorrectOnClick();
-
+    _jQuery('.rate-it-cool-show-stars').on('click',function(e) {
+      e.preventDefault();
+      _jQuery('.rate-it-cool-stars-detail-table').toggle('bounce');
+    });
     _openFeedbackForm();
   }
 
@@ -615,7 +882,8 @@ var RateItCoolAPI = (function($){
     init: function(params) {
       _username = params.username;
       _password = params.password;
-      _limit = params.limit;
+      _limit = (params.limit !== undefined? params.limit: _limit);
+      _securityText = params.securitytext;
       if (params.noConflict) {
         _jQuery = jQuery.noConflict();
         $ = _oldjQuery;

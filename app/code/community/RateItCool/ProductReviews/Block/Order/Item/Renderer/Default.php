@@ -35,7 +35,7 @@
 class RateItCool_ProductReviews_Block_Order_Item_Renderer_Default extends Mage_Sales_Block_Order_Item_Renderer_Default
 {
   public function getName() {
-    return 'NBLA';
+    
   }
 
   public function getSummaryHtml($product, $templateType, $displayIfNoReviews)

@@ -24,7 +24,10 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div class="ratings rate-it-cool-product" data-gpnvalue="<?php echo $this->getGpnValue(); ?>" data-gpntype="<?php echo $this->getGpnType(); ?>">
+<div class="ratings rate-it-cool-product"
+    data-gpnvalue="<?php echo $this->getGpnValue(); ?>"
+    data-language="<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>" 
+    data-gpntype="<?php echo $this->getGpnType(); ?>">
   <div class="rating-box">
       <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary" style=""></div>
   </div>

@@ -1,6 +1,6 @@
 .ratings .ratingCount {
   float:left;
-  width:20px;
+  width:60px;
   margin-top:5px;
 }
 .ratings .rating.rate-it-cool-review-summary-empty {
@@ -9,7 +9,7 @@
 .feedbackOverview td.count {
   padding-left: 5px;
 }
-.rate-it-cool-product-feedbacks .overview, .rate-it-cool-product-feedbacks .recommend {
+.rate-it-cool-product-feedbacks .overview, .rate-it-cool-product-feedbacks .recommend, .rate-it-cool-product-public-feedbackform {
   margin: 10px 0;
   padding-bottom: 10px;
   border-bottom: solid 1px #ccc;
@@ -38,6 +38,9 @@
 .rate-it-cool-product-feedbacks .date {
   float:right;
 }
+.rate-it-cool-product-feedbacks table.feedbackOverview {
+  float: left;
+}
 
 .box-up-sell .ratings, .cms-index-index .products-grid .ratings, .cms-index-noroute .products-grid .ratings {
   display: block !important;
@@ -52,7 +55,13 @@
 .rate-it-cool-feedback-form .feedback-title {
   margin-top: 10px;
 }
-.rate-it-cool-feedback-form .feedback-content textarea
+.rate-it-cool-feedback-form td {
+  padding: 2px 10px;
+}
+.rate-it-cool-feedback-form td.second {
+  background-color:#eee;
+}
+.rate-it-cool-feedback-form .feedback-content textarea, .feedback-content textarea
 {
   padding: 10px 0 10px 5px;
   width: 99% !important;
@@ -60,9 +69,48 @@
   margin: 10px 0;
   border-color: #ccc;
 }
+.feedback-title input {
+  width: 100%;
+}
 .rate-it-cool-feedback-form .rate-it-cool-star-text {
   margin-left: 10px;
 }
 .rateit-cool-send-feedback-error {
   color: red;
+}
+.rate-it-cool-show-stars {
+  font-size: 10px;
+  outline: solid 1px #ccc;
+  padding: 2px 8px;
+  background-position: 0 -573px;
+  cursor: pointer;
+}
+.rate-it-cool-show-stars:hover {
+  background-position: -50px -573px;
+}
+.rate-it-cool-stars-detail-table {
+  outline: solid 1px #ccc;
+  margin-top: 10px;
+  width: inherit;
+}
+
+.rate-it-cool-stars-detail-table td, .rate-it-cool-stars-detail-table th {
+  padding: 2px;
+}
+
+.rate-it-cool-stars-detail-table th {
+  background-color: #ccc;
+  font-weight: bold;
+}
+.rate-it-cool-detail-stars {
+  float: right;
+}
+
+.feedbackOverview td, .rate-it-cool-detail-stars td {
+  padding: 2px;
+}
+
+.rate-it-cool-verified, .rate-it-cool-public, .rate-it-cool-mobile {
+  float: right;
+  font-weight: bold;
 }

@@ -58,9 +58,19 @@
 </div>
 
 <div id="rate-it-cool-product-feedbacks-template" style="display:none;">
+  <div class="missingFeedback">
+    <div class="rate-it-cool-product-public-feedbackform">
+      <h3><?php echo $this->__('First product review for this product'); ?></h3>
+      <div id="feedbackform" class="rate-it-cool-feedback-form" style="">
+        <form name="productDetailFeedbackform$gpnvalue">
+          $feedbackForm
+        </form>
+      </div>
+    </div>
+  </div>
   <div class="feedbackElements">
     <div class="overview">
-      <?php echo $this->__('Reviews'); ?>
+      <h3><?php echo $this->__('Reviews'); ?></h3>
       <table class="feedbackOverview">
         <tr>
           <td class="ratings">
@@ -123,6 +133,210 @@
           </td>
         </tr>
       </table>
+      <table class="rate-it-cool-detail-stars" style="$detail.show">
+        <thead>
+          <tr>
+            <th colspan="2"><?php echo $this->__('Detail'); ?> ($details.total / $overview.total)</th>
+          </tr>
+        </thead>
+        <tr style="$details.detail1.display">
+          <td>$details.detail1.title</td>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:$detail.detail1%;"></div>
+            </div>
+          </td>
+        </tr>
+        <tr style="$details.detail2.display">
+          <td>$details.detail2.title</td>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:$detail.detail2%;"></div>
+            </div>
+          </td>
+        </tr>
+        <tr style="$details.detail3.display">
+          <td>$details.detail3.title</td>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:$detail.detail3%;"></div>
+            </div>
+          </td>
+        </tr>
+        <tr style="$details.detail4.display">
+          <td>$details.detail4.title</td>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:$detail.detail4%;"></div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div class="clearfix"></div>
+    </div>
+    <div class="rate-it-cool-product-public-feedbackform">
+      <div class="rate-it-cool-product-feedbackform">
+        <a href="#"
+        class="rateit-cool-show-feedbackform-link"
+        title="<?php echo $this->__('Write a product review.'); ?>"><?php echo $this->__('Write a product review'); ?></a>
+      </div>
+      <div id="feedbackform" class="rate-it-cool-feedback-form" style="display:none;">
+        <br>
+          <form name="productDetailFeedbackform$gpnvalue">
+            <input type="hidden" name="gpntype" value="$gpntype"/>
+            <input type="hidden" name="gpnvalue" value="$gpnvalue"/>
+            <input type="hidden" name="source" value="public"/>
+            <input type="hidden" name="language" value="<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>"/>
+            <table>
+              <tr>
+                <td class="label second"><?php echo $this->__('Global'); ?></td>
+                <td class="ratings">
+                  <span class="reviewStars">
+                    <input type="hidden" class="stars" name="stars" value="0"/>
+                    <div class="rating-box oneStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('not really ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box twoStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('hm ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box threeStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fourStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('cool'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fiveStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('coolest'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                  </div>
+                  </span>
+                </td>
+              </tr>
+              <tr class="reviewDetail1" style="display:none;">
+                <td class="label"></td>
+                <td class="ratings">
+                  <span class="reviewStars">
+                    <input type="hidden" class="stars" name="detail1" value="0"/>
+                    <div class="rating-box oneStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('not really ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box twoStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('hm ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box threeStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fourStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('cool'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fiveStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('coolest'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                  </div>
+                  </span>
+                </td>
+              </tr>
+              <tr class="reviewDetail2" style="display:none;">
+                <td class="label second"></td>
+                <td class="ratings">
+                  <span class="reviewStars">
+                    <input type="hidden" class="stars" name="detail2" value="0"/>
+                    <div class="rating-box oneStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('not really ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box twoStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('hm ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box threeStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fourStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('cool'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fiveStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('coolest'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                  </div>
+                  </span>
+                </td>
+              </tr>
+              <tr class="reviewDetail3" style="display:none;">
+                <td class="label"></td>
+                <td class="ratings">
+                  <span class="reviewStars">
+                    <input type="hidden" class="stars" name="detail3" value="0"/>
+                    <div class="rating-box oneStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('not really ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box twoStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('hm ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box threeStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fourStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('cool'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fiveStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('coolest'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                  </div>
+                  </span>
+                </td>
+              </tr>
+              <tr class="reviewDetail4" style="display:none;">
+                <td class="label second"></td>
+                <td class="ratings">
+                  <span class="reviewStars">
+                    <input type="hidden" class="stars" name="detail4" value="0"/>
+                    <div class="rating-box oneStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('not really ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box twoStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('hm ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box threeStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('ok'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fourStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('cool'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                    <div class="rating-box fiveStars" style="width: 13px;float:left;" title="<?php echo Mage::helper('RateItCool_ProductReviews')->__('coolest'); ?>">
+                      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary"></div>
+                    </div>
+                  </div>
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <br/>
+            <div class="feedback-title">
+              <input type="text" name="feedbackTitle" placeholder="<?php echo $this->__('Title of the review');?>" />
+            </div>
+            <div class="feedback-content">
+              <textarea name="feedbackContent" placeholder="<?php echo $this->__('Content of the review');?>"></textarea>
+            </div>
+            <div class="feedback-recommend">
+              <input name="recommend" type="checkbox"> <?php echo $this->__('I recommend the product to a friend'); ?>
+            </div>
+            <br/>
+            <div class="feedback-title">
+              <?php echo $this->__('Please fill in the fellowing text'); ?>: <b><?php echo Mage::getStoreConfig('catalog/RateItCool_ProductReviews/security_text'); ?></b>
+              <br/>
+              <input name="securityText" type="text" placeholder="">
+            </div>
+            <br/>
+            <div class="rateit-cool-send-feedback">
+              <a href="#" data-formname="productDetailFeedbackform$gpnvalue" class="button rateit-cool-send-produkt-feedback"><?php echo $this->__('Send the review');?></a>
+            </div>
+          </form>
+          <div class="rateit-cool-send-feedback-success" style="display:none">
+            <?php echo $this->__('Thank you for the review'); ?>
+          </div>
+          <div class="rateit-cool-send-feedback-error" style="display:none">
+            <?php echo $this->__("Can't send the review"); ?>
+          </div>
+      </div>
     </div>
     <div class="recommend">
       <?php echo $this->__('Customer recommended this product'); ?>: $recommend%
@@ -154,9 +368,11 @@
           <div class="rating" style="width:$review.stars%;"></div>
         </div>
       </div>
-      <span class="date">($review.time)</span>
+      <span class="date">$review.time</span>
       <h3>$review.title</h3>
-
+      <span class="rate-it-cool-verified" style="$review.verified_source"><?php echo Mage::helper('RateItCool_ProductReviews')->__('verified'); ?></span>
+      <span class="rate-it-cool-public" style="$review.public_source"><?php echo Mage::helper('RateItCool_ProductReviews')->__('public'); ?></span>
+      <span class="rate-it-cool-mobile" style="$review.mobile_source"><?php echo Mage::helper('RateItCool_ProductReviews')->__('mobile'); ?></span>
     </dt>
     <dd>
       $review.content

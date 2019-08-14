@@ -24,14 +24,103 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div class="ratings rate-it-cool-product-detail" data-gpnvalue="<?php echo $this->getGpnValue(); ?>" data-gpntype="<?php echo $this->getGpnType(); ?>">
-  <div class="rating-box">
-      <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary" style=""></div>
-  </div>
-  <div class="ratingCount">(<span class="rate-it-cool-review-counts">0</span>)</div>
-  <!--
-  <p class="rating-links rateit-cool-review-link" style="display:none;">
-      <a href="<?php echo $this->getReviewsUrl() ?>"><?php echo $this->__('ShowReviews') ?></a>
-  </p>
-  -->
+<div class="ratings rate-it-cool-product-detail"
+  data-gpnvalue="<?php echo $this->getGpnValue(); ?>"
+  data-language="<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>"
+  data-gpntype="<?php echo $this->getGpnType(); ?>">
+
+    <div class="rating-box">
+        <div class="rating rate-it-cool-review-summary-empty rate-it-cool-review-summary" style=""></div>
+    </div>
+    <div class="ratingCount">(<span class="rate-it-cool-review-counts">0</span>)
+      <span class="icon-sprite rate-it-cool-show-stars" style="display:none;"></span>
+    </div>
+</div>
+<div class="ratings rate-it-cool-stars-detail-table" style="display: none;">
+  <table style="width:100%;">
+    <tbody>
+      <tr>
+        <th colspan="2"><?php echo $this->__('Overview'); ?></th>
+      </tr>
+    </tbody>
+    <tr>
+      <td>
+        <div class="rating-box">
+          <div class="rating" style="width: 100%;"></div>
+        </div>
+      </td>
+      <td>$review.star5</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="rating-box">
+          <div class="rating" style="width: 80%;"></div>
+        </div>
+      </td>
+      <td>$review.star4</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="rating-box">
+          <div class="rating" style="width: 60%;"></div>
+        </div>
+      </td>
+      <td>$review.star3</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="rating-box">
+          <div class="rating" style="width: 40%;"></div>
+        </div>
+      </td>
+      <td>$review.star2</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="rating-box">
+          <div class="rating" style="width: 20%;"></div>
+        </div>
+      </td>
+      <td>$review.star1</td>
+    </tr>
+  </table>
+  <table style="width:100%;$details.display">
+    <tbody>
+      <tr>
+        <th colspan="2"><?php echo $this->__('Detail'); ?> ($details.total/$review.total)</th>
+      </tr>
+    </tbody>
+    <tr style="$details.detail1.display">
+      <td>$details.detail1.title</td>
+      <td class="stars">
+        <div class="rating-box">
+          <div class="rating" style="width: $review.details.detail1%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr style="$details.detail2.display">
+      <td>$details.detail2.title</td>
+      <td class="stars">
+        <div class="rating-box">
+          <div class="rating" style="width: $review.details.detail2%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr style="$details.detail3.display">
+      <td>$details.detail3.title</td>
+      <td class="stars">
+        <div class="rating-box">
+          <div class="rating" style="width: $review.details.detail3%;"></div>
+        </div>
+      </td>
+    </tr>
+    <tr style="$details.detail4.display">
+      <td>$details.detail4.title</td>
+      <td class="stars">
+        <div class="rating-box">
+          <div class="rating" style="width: $review.details.detail4%;"></div>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>

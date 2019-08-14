@@ -74,6 +74,8 @@
         <api_user>demo</api_user>
         <api_key>password</api_key>
         <server_api_key>password</server_api_key>
+        <limit>3</limit>
+        <security_text>mysecret</security_text>
       </productreviews>
     </catalog>
   </default>
