@@ -38,3 +38,31 @@
 .rate-it-cool-product-feedbacks .date {
   float:right;
 }
+
+.box-up-sell .ratings, .cms-index-index .products-grid .ratings, .cms-index-noroute .products-grid .ratings {
+  display: block !important;
+}
+
+.rate-it-cool-feedback-form .rating-box {
+  cursor: pointer;
+}
+.rate-it-cool-feedback-form h2 {
+  margin-bottom: 0;
+}
+.rate-it-cool-feedback-form .feedback-title {
+  margin-top: 10px;
+}
+.rate-it-cool-feedback-form .feedback-content textarea
+{
+  padding: 10px 0 10px 5px;
+  width: 99% !important;
+  max-width:100%;
+  margin: 10px 0;
+  border-color: #ccc;
+}
+.rate-it-cool-feedback-form .rate-it-cool-star-text {
+  margin-left: 10px;
+}
+.rateit-cool-send-feedback-error {
+  color: red;
+}

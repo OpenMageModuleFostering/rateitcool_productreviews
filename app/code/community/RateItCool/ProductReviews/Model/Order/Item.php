@@ -18,27 +18,25 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magento.com for more information.
  *
- * @category   RateItCool
- * @package    RateItCool_ProductReviews
- * @author     Cool Services GbR <thomas.gravel@rateit.cool>
- * @copyright  Copyright (c) 2015 Cool Services GbR (https://www.rateit.cool)
+ * @category    Mage
+ * @package     Mage_Sales
+ * @copyright  Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Review detailed view block
+ * Order Item Model
  *
- * @category   RateItCool
- * @package    RateItCool_ProductReviews
- * @author     Cool Services GbR <thomas.gravel@rateit.cool>
+ *
+ * @category    Mage
+ * @package     Mage_Sales
+ * @author      Magento Core Team <core@magentocommerce.com>
  */
-
-class RateItCool_ProductReviews_Block_View extends Mage_Catalog_Block_Product_Abstract
+class RateItCool_ProductReviews_Model_Order_Item extends Mage_Sales_Model_Order_Item
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setTemplate('productreviews/view.phtml');
-    }
 
+  public function getSummaryHtml()
+  {
+      return $this->getProduct()->getGpnValue();
+  }
 }

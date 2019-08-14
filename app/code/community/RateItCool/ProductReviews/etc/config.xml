@@ -14,6 +14,11 @@
           <product>RateItCool_ProductReviews_Model_Product</product>
         </rewrite>
       </catalog>
+      <sales>
+        <rewrite>
+          <order_item>RateItCool_ProductReviews_Model_Order_Item</order_item>
+        </rewrite>
+      </sales>
     </models>
     <resources>
       <review_setup>
@@ -50,6 +55,15 @@
         </args>
       </review>
     </routers>
+    <translate>
+      <modules>
+        <RateItCool_ProductReviews>
+          <files>
+            <default>RateItCool_ProductReviews.csv</default>
+          </files>
+        </RateItCool_ProductReviews>
+      </modules>
+    </translate>
   </frontend>
   <default>
     <catalog>

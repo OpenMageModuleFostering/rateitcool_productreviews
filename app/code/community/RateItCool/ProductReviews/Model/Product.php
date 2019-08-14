@@ -35,6 +35,17 @@
  */
 class RateItCool_ProductReviews_Model_Product extends Mage_Catalog_Model_Product {
 
+  protected $_apiUserName = 'demo';
+  protected $_apiKey = 'password';
+  protected $_staticGPNFieldname = 'ean';
+
+  public function __construct()
+  {
+    $this->_apiUserName = Mage::getStoreConfig('catalog/RateItCool_ProductReviews/api_user');
+    $this->_apiKey = Mage::getStoreConfig('catalog/RateItCool_ProductReviews/api_key');
+    parent::__construct();
+  }
+
   /**
    * Returns rating summary (always return true)
    *
@@ -43,5 +54,25 @@ class RateItCool_ProductReviews_Model_Product extends Mage_Catalog_Model_Product
   public function getRatingSummary()
   {
     return true;
+  }
+
+  public function getGpnValue()
+  {
+    if ($this->getEan() != NULL) {
+      return $this->getEan();
+    } else if ($this->getSku() != NULL) {
+      return $this->getSku();
+    } else {
+      return $this->getId();
+    }
+  }
+
+  public function getGpnType()
+  {
+    if ($this->getEan() != NULL) {
+      return $this->_staticGPNFieldname;
+    } else {
+      return $this->_apiUserName;
+    }
   }
 }

@@ -34,8 +34,7 @@ var RateItCoolAPI = (function($){
         _jQuery.each(gpnvalues, function(gpntype, values) {
           if (values.length > 0) {
             _jQuery.ajax({
-              //url : 'https://api.rateit.cool/stars/' + gpntype + '/' + gpnvalues.join(','),
-              url : 'http://localhost:8080/stars/' + gpntype + '/' + values.join(','),
+              url : 'https://api.rateit.cool/stars/' + gpntype + '/' + values.join(','),
               method: 'GET',
               dataType : 'json',
               crossDomain: true,
@@ -78,8 +77,7 @@ var RateItCoolAPI = (function($){
       var destinationElement = _jQuery(productlistSpans[0]);
       if (gpntype && gpnvalue) {
         _jQuery.ajax({
-//          url : 'https://api.rateit.cool/stars/' + gpntype + '/' + gpnvalue,
-          url : 'http://localhost:8080/stars/' + gpntype + '/' + gpnvalue,
+          url : 'https://api.rateit.cool/stars/' + gpntype + '/' + gpnvalue,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -129,8 +127,7 @@ var RateItCoolAPI = (function($){
       if (gpntype && gpnvalue && language) {
 
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + '&full=true' + extendedString,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + '&full=true' + extendedString,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + '&full=true' + extendedString,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -224,8 +221,7 @@ var RateItCoolAPI = (function($){
       if (gpntype && gpnvalue && language) {
 
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=' + _limit + extendedString,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -280,7 +276,7 @@ var RateItCoolAPI = (function($){
   };
 
   var _registerClickFeedbackSend = function() {
-      _jQuery('.rateit-cool-send-feedback a').on('click', function(e){
+    _jQuery('.rateit-cool-send-feedback').delegate('a', 'click', function(e){
       e.preventDefault();
       var gpntype = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=gpntype]').val(),
           gpnvalue = _jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=gpnvalue]').val(),
@@ -292,11 +288,10 @@ var RateItCoolAPI = (function($){
             recommend: (_jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=recommend]').is(':checked')?1:0)
           },
           destinationElement = _jQuery(this);
-
+console.log(gpntype,gpnvalue, language, feedbackElement);
       if (gpntype && gpnvalue && language && feedbackElement.title !== '' && feedbackElement.content !== '' && feedbackElement.stars > 0) {
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language,
           method: 'POST',
           data: JSON.stringify(feedbackElement),
           dataType : 'json',
@@ -334,54 +329,59 @@ var RateItCoolAPI = (function($){
 
   var _fillStarsOnClick = function() {
     // fill stars on click
-    _jQuery('.reviewStars span.value1').on('click', function(e) {
+    _jQuery('.rate-it-cool-feedback-form').delegate('.oneStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parent().find('.star2').removeClass('star2').addClass('star0');
-      _jQuery(this).removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('[name=stars]').val(1);
-      _jQuery(this).parent().find('.star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('[name=stars]').val(2);
+      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
-    _jQuery('.reviewStars span.value2').on('click', function(e) {
+    _jQuery('.rate-it-cool-feedback-form').delegate('.twoStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parent().find('.star2').removeClass('star2').addClass('star0');
-      _jQuery(this).parent().find('.value1').removeClass('star0').addClass('star2');
-      _jQuery(this).removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('[name=stars]').val(2);
-      _jQuery(this).parent().find('.star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('[name=stars]').val(2);
+      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
-    _jQuery('.reviewStars span.value3').on('click', function(e) {
+    _jQuery('.rate-it-cool-feedback-form').delegate('.threeStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parent().find('.star2').removeClass('star2').addClass('star0');
-      _jQuery(this).parent().find('.value1').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value2').removeClass('star0').addClass('star2');
-      _jQuery(this).removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('[name=stars]').val(3);
-      _jQuery(this).parent().find('.star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('[name=stars]').val(3);
+      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
-    _jQuery('.reviewStars span.value4').on('click', function(e) {
+    _jQuery('.rate-it-cool-feedback-form').delegate('.fourStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parent().find('.star2').removeClass('star2').addClass('star0');
-      _jQuery(this).parent().find('.value1').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value2').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value3').removeClass('star0').addClass('star2');
-      _jQuery(this).removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('[name=stars]').val(4);
-      _jQuery(this).parent().find('.star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('[name=stars]').val(4);
+      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
 
-    _jQuery('.reviewStars span.value5').on('click', function(e) {
+    _jQuery('.rate-it-cool-feedback-form').delegate('.fiveStars', 'click', function(e) {
       e.preventDefault();
-      _jQuery(this).parent().find('.star2').removeClass('star2').addClass('star0');
-      _jQuery(this).parent().find('.value1').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value2').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value3').removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('.value4').removeClass('star0').addClass('star2');
-      _jQuery(this).removeClass('star0').addClass('star2');
-      _jQuery(this).parent().find('[name=stars]').val(5);
-      _jQuery(this).parent().find('.star-text').html(_jQuery(this).attr('title'));
+      _jQuery(this).parents('form').find('.rate-it-cool-review-summary').attr('style','');
+      _jQuery(this).find('.rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.oneStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.twoStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.threeStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.fourStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('.fiveStars .rate-it-cool-review-summary').attr('style','width:100%;');
+      _jQuery(this).parents('form').find('[name=stars]').val(5);
+      _jQuery(this).parents('form').find('.rate-it-cool-star-text').html(_jQuery(this).attr('title'));
     });
     // fill stars on click end
   };
@@ -400,8 +400,7 @@ var RateItCoolAPI = (function($){
         thisElement.attr('data-positive', (positive+1));
         _jQuery(destinationElement).html(positive+1);
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=positive&id='+feedbackId,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=positive&id='+feedbackId,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=positive&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -430,8 +429,7 @@ var RateItCoolAPI = (function($){
 
       if (feedbackId && gpntype && gpnvalue && language) {
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?incorrect=1&id='+feedbackId,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?incorrect=1&id='+feedbackId,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?incorrect=1&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -446,6 +444,14 @@ var RateItCoolAPI = (function($){
       }
     });
   };
+
+  var _openFeedbackForm = function() {
+    _jQuery('.rateit-cool-feedback-from').delegate('a', 'click', function(e) {
+      e.preventDefault();
+      var feedbackId = _jQuery(this).attr('data-feedbackid');
+      _jQuery('#' + feedbackId).toggle('bounce');
+    });
+  }
 
   var _sendNotHelpfulOnClick = function() {
     _jQuery('.helpful').delegate('.negative', 'click', function(e) {
@@ -463,8 +469,7 @@ var RateItCoolAPI = (function($){
 
       if (feedbackId && gpntype && gpnvalue && language) {
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=negative&id='+feedbackId,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=negative&id='+feedbackId,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?helpful=negative&id='+feedbackId,
           method: 'PUT',
           dataType : 'json',
           crossDomain: true,
@@ -520,8 +525,7 @@ var RateItCoolAPI = (function($){
           feedbackElements = [];
       if (gpntype && gpnvalue && language && count && extraParameter != undefined) {
         _jQuery.ajax({
-          //url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=5&skip=' + count + extraParameter,
-          url : 'http://localhost:8080/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=5&skip=' + count + extraParameter,
+          url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language + '?limit=5&skip=' + count + extraParameter,
           method: 'GET',
           dataType : 'json',
           crossDomain: true,
@@ -589,6 +593,8 @@ var RateItCoolAPI = (function($){
     _showFeedbacksWithStarsOnClick();
     _showMoreFeedbacksOnClick();
     _sendIncorrectOnClick();
+
+    _openFeedbackForm();
   }
 
   return {

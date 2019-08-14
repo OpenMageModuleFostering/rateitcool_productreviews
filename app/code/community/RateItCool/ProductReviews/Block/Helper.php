@@ -63,22 +63,12 @@ class RateItCool_ProductReviews_Block_Helper extends Mage_Core_Block_Template
 
     public function getGpnValue()
     {
-      if ($this->getProduct()->getEan() != NULL) {
-        return $this->getProduct()->getEan();
-      } else if ($this->getProduct()->getSku() != NULL) {
-        return $this->getProduct()->getSku();
-      } else {
-        return $this->getProduct()->getId();
-      }
+      return $this->getProduct()->getGpnValue();
     }
 
     public function getGpnType()
     {
-      if ($this->getProduct()->getEan() != NULL) {
-        return 'ean';
-      } else {
-        return $this->_apiUserName;
-      }
+      return $this->getProduct()->getGpnType();
     }
 
     public function getReviewsUrl()
@@ -99,7 +89,6 @@ class RateItCool_ProductReviews_Block_Helper extends Mage_Core_Block_Template
      */
     public function addTemplate($type, $template)
     {
-Mage::Log('RateItCool addTemplate');
         $this->_availableTemplates[$type] = $template;
     }
 }
