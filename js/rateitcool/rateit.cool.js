@@ -7,6 +7,16 @@ var RateItCoolAPI = (function($){
       _jQuery = $,
       _oldjQuery = $;
 
+  var _zerofilledGtin = function(n,w) {
+    if (n.length < 13) {
+      var n_ = Math.abs(n);
+      var zeros = Math.max(0, w - Math.floor(n_).toString().length );
+      var zeroString = Math.pow(10,zeros).toString().substr(1);
+      return zeroString+n;
+    }
+    return n;
+  }
+
   var _ratingsProductList = function () {
     var productlistSpans = _jQuery('.rate-it-cool-product');
     if (productlistSpans && productlistSpans.length > 0) {
@@ -22,6 +32,10 @@ var RateItCoolAPI = (function($){
         if (_jQuery(productlistSpans[ i ]).attr('data-gpnvalue') !== undefined) {
           gpnvalue = _jQuery(productlistSpans[ i ]).attr('data-gpnvalue');
           if (gpnvalue.length > 0) {
+            if (gpntype !== _username) {
+              gpnvalue = _zerofilledGtin(_jQuery(productlistSpans[ i ]).attr('data-gpnvalue'),13);
+              _jQuery(productlistSpans[ i ]).attr('data-gpnvalue', gpnvalue);
+            }
             if (gpnvalues[gpntype] == undefined) {
               gpnvalues[gpntype] = [];
             }

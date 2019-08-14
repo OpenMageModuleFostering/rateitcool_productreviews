@@ -64,6 +64,8 @@ class RateItCool_ProductReviews_Model_Review_Reviews extends Mage_Core_Model_Abs
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($this->request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this->request, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $returnElement = array();
 
