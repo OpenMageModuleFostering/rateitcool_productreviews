@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+    <name>RateItCool_ProductReviews</name>
+    <version>1.0.0</version>
+    <stability>stable</stability>
+    <license>MTL</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>rateit.cool is a cloudbased service that allows all shops to collect &amp; use product reviews together.</summary>
+    <description>You have many products in your shop without any reviews? Get much more reviews with all other shops and show product reviews to all of your products. Create 200% more sales with product reviews and 65% more sales with many product reviews for each product. (Research from Big Social Media at 2014) &#xD;
+&#xD;
+Easy to use the rateit.cool service. You can get product reviews in 10 minutes without any IT project. Test the service and be impressed.&#xD;
+&#xD;
+Integrate the rateit.cool service at your homepage, your shop or app. Show the product reviews everywhere you want. &#xD;
+&#xD;
+You already have product reviews? No problem: You can upload these product reviews to rateit.cool.&#xD;
+&#xD;
+The plugin provides the stars per product&#xD;
+-  within the productlist&#xD;
+-  within the topseller&#xD;
+-  on the article detail view.&#xD;
+&#xD;
+Furthermore review texts are displayed on the article detail view. For the collection of product reviews a form is available in the order history. &#xD;
+&#xD;
+The service the plugin calls is settled on the number of service requests. This number corresponds to the page impressions in the shop for the list of products, the product detail page, and the pages with topseller integration.</description>
+    <notes>Integration in all product lists</notes>
+    <authors><author><name>Thomas Gravel</name><user>RateItCoolReviews</user><email>thomas.gravel@rateit.cool</email></author></authors>
+    <date>2015-09-03</date>
+    <time>13:03:41</time>
+    <contents><target name="magecommunity"><dir name="RateItCool"><dir name="ProductReviews"><dir name="Block"><file name="Helper.php" hash="abaf66ef406911a81901a518f96990f1"/><dir name="Product"><dir name="View"><file name="List.php" hash="17c1f9e6e6f79d40fdc14fd39b1d24d6"/></dir><file name="View.php" hash="f4dc4a5bcf0ad9ad91639e7181ed0f51"/></dir><file name="View.php" hash="b9f20349b9c0bf07534607b3e28b1020"/></dir><dir name="Helper"><file name="Data.php" hash="2a9f2f7a0eefb8c26c4c4ce3116879cf"/></dir><dir name="Model"><file name="Product.php" hash="618e195b5344dc8c687c8e493dc94634"/></dir><dir name="etc"><file name="config.xml" hash="243f94965b5a8eb808bf33f9137096ea"/><file name="system.xml" hash="f04c9a8051826fa1773a3c95a587bd4f"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="productreviews"><dir name="helper"><file name="summary.phtml" hash="bf986ff812fe27a2fe6d75a5d3921518"/><file name="summary_short.phtml" hash="b7cefced1edd907dbe062dea7b5fd727"/></dir><file name="javascript.phtml" hash="3d5a2736bd215769e6c47ff0557b4a44"/><file name="metatag.phtml" hash="8019fb54db1017b4e120423d548230bc"/><dir name="product"><dir name="view"><file name="list.phtml" hash="7dfb5ebad9c7819f025d7e2682d61eb6"/></dir></dir><file name="view.phtml" hash="4651fb9bf0f1bff168be7ce8d2b51ecb"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RateItCool_ProductReviews.xml" hash="2de7f921ef87e18450027a5206d4ed93"/></dir></target><target name="magelocale"><dir name="en_US"><file name="RateItCool_ProductReviews.csv" hash="371a66e4c167ca1d4cee6d943fc02fa8"/></dir></target><target name="mageweb"><dir name="js"><dir name="rateitcool"><file name="rateit.cool.js" hash="dec05d9af1c9ed74ad4a7f967858271d"/></dir></dir></target><target name="mageskin"><dir name="frontend"><dir name="base"><dir name="default"><dir name="rateitcool"><file name="rateit.cool.css" hash="51aa8f6371c7c7c84fcb774497dc4715"/></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>

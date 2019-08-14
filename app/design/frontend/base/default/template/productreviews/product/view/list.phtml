@@ -1,0 +1,156 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="box-collateral box-reviews rate-it-cool-product-feedbacks"
+      data-gpntype="<?php echo $this->getGpnType(); ?>"
+      data-gpnvalue="<?php echo $this->getGpnValue(); ?>"
+      data-language="<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>"
+      data-count=""
+      data-extraParameter="" id="customer-reviews">
+
+</div>
+
+<div id="rate-it-cool-product-feedbacks-template" style="display:none;">
+  <div class="feedbackElements">
+    <div class="overview">
+      <?php echo $this->__('Reviews'); ?>
+      <table class="feedbackOverview">
+        <tr>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:100%;"></div>
+            </div>
+          </td>
+          <td class="count">
+            <a class="showOnlyStars" data-stars="5" href="#" title="<?php echo $this->__('Show only reviews with 5 stars'); ?>">
+              $five
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:80%;"></div>
+            </div>
+          </td>
+          <td class="count">
+            <a class="showOnlyStars" data-stars="4" href="#" title="<?php echo $this->__('Show only reviews with 4 stars'); ?>">
+              $four
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:60%;"></div>
+            </div>
+          </td>
+          <td class="count">
+            <a class="showOnlyStars" data-stars="3" href="#" title="<?php echo $this->__('Show only reviews with 3 stars'); ?>">
+              $three
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:40%;"></div>
+            </div>
+          </td>
+          <td class="count">
+            <a class="showOnlyStars" data-stars="2" href="#" title="<?php echo $this->__('Show only reviews with 2 stars'); ?>">
+              $two
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ratings">
+            <div class="rating-box">
+              <div class="rating" style="width:20%;"></div>
+            </div>
+          </td>
+          <td class="count">
+            <a class="showOnlyStars" data-stars="1" href="#" title="<?php echo $this->__('Show only reviews with 1 stars'); ?>">
+              $one
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="recommend">
+      <?php echo $this->__('Customer recommended this product'); ?>: $recommend%
+      <span style="float:right;">
+        <select data-extraParameter="" name="reorderReviews">
+          <option value="time;desc"><?php echo $this->__('Show the latest reviews first'); ?></option>
+          <option value="time;asc"><?php echo $this->__('Show the oldest reviews first'); ?></option>
+          <option value="stars;desc"><?php echo $this->__('Show best reviews first'); ?></option>
+          <option value="stars;asc"><?php echo $this->__('Show the worst reviews first'); ?></option>
+          <option value="helpful;desc"><?php echo $this->__('Show the best helpful reviews first'); ?></option>
+          <option value="helpful;asc"><?php echo $this->__('Show the worst helpful reviews first'); ?></option>
+        </select>
+      </span>
+    </div>
+    <dl class="list">
+      $list
+    </dl>
+    <div class="showmoreContainer">
+      <div class="showmore" style="display: $showNewtLink;">
+        <a href="#" class="showMoreFeedbacks" data-extraParameter="" data-count="$count" data-language="$language" data-gpntype="$gpntype" data-gpnvalue="$gpnvalue"><?php echo $this->__('Show more reviews...'); ?></a>
+      </div>
+    </div>
+  </div>
+
+  <dl class="feedbackElement" style="display:none;">
+    <dt>
+      <div class="ratings">
+        <div class="rating-box">
+          <div class="rating" style="width:$review.stars%;"></div>
+        </div>
+      </div>
+      <span class="date">($review.time)</span>
+      <h3>$review.title</h3>
+
+    </dt>
+    <dd>
+      $review.content
+      <div class="helpful">
+        <?php echo $this->__('Is the review helpful for you?'); ?>
+          <span class="positive" data-positive="$review.positive" data-language="$review.language" data-gpntype="$review.gpntype" data-gpnvalue="$review.gpnvalue" data-feedbackid="$review.id">
+            <?php echo $this->__('Yes'); ?> (<span class="positiveValue">$review.positive</span>)
+          </span> |
+          <span class="negative" data-negative="$review.negative"  data-language="$review.language" data-gpntype="$review.gpntype" data-gpnvalue="$review.gpnvalue" data-feedbackid="$review.id">
+            <?php echo $this->__('No'); ?> (<span class="negativeValue">$review.negative</span>)
+          </span>
+      </p>
+      <p class="incorrect">
+        <?php echo $this->__('Feedback %s report %s','<span class="report" data-language="$review.language" data-gpntype="$review.gpntype" data-gpnvalue="$review.gpnvalue" data-feedbackid="$review.id">','</span>'); ?>
+      </p>
+
+    </dd>
+  </dl>
+
+</div>

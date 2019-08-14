@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- The root node for Magento module configuration -->
+<config>
+  <modules>
+    <RateItCool_ProductReviews>
+      <version>0.0.1</version>
+    </RateItCool_ProductReviews>
+  </modules>
+  <global>
+    <models>
+      <catalog>
+        <rewrite>
+          <product>RateItCool_ProductReviews_Model_Product</product>
+        </rewrite>
+      </catalog>
+    </models>
+    <resources>
+      <review_setup>
+        <setup>
+          <module>RateItCool_ProductReviews</module>
+        </setup>
+      </review_setup>
+    </resources>
+    <blocks>
+      <review>
+        <class>RateItCool_ProductReviews_Block</class>
+      </review>
+    </blocks>
+    <helpers>
+      <RateItCool_ProductReviews>
+        <class>RateItCool_ProductReviews_Helper</class>
+      </RateItCool_ProductReviews>
+    </helpers>
+  </global>
+  <frontend>
+    <layout>
+      <updates>
+        <RateItCool_ProductReviews module="RateItCool_ProductReviews">
+          <file>productreviews.xml</file>
+        </RateItCool_ProductReviews>
+      </updates>
+    </layout>
+    <routers>
+      <review>
+        <use>standard</use>
+        <args>
+          <module>RateItCool_ProductReviews</module>
+          <frontName>review</frontName>
+        </args>
+      </review>
+    </routers>
+  </frontend>
+  <default>
+    <catalog>
+      <RateItCool_ProductReviews>
+        <api_user>demo</api_user>
+        <api_key>password</api_key>
+      </RateItCool_ProductReviews>
+    </catalog>
+  </default>
+</config>

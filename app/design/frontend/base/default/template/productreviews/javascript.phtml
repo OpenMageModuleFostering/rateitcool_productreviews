@@ -1,0 +1,11 @@
+<?php
+
+?>
+<script>
+RateItCoolAPI.init({
+    username: '<?php echo Mage::getStoreConfig('catalog/RateItCool_ProductReviews/api_user'); ?>',
+    password: '<?php echo Mage::getStoreConfig('catalog/RateItCool_ProductReviews/api_key'); ?>',
+    limit: '3',
+    noConflict: false
+  });
+</script>
