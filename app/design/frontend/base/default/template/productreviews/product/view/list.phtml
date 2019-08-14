@@ -32,6 +32,29 @@
       data-count=""
       data-extraParameter="" id="customer-reviews">
 
+  <?php $_items = $this->getReviewsCollection();?>
+  <?php foreach($_items as $_review): ?>
+    <div itemscope itemtype="http://schema.org/Review">
+      <meta itemprop="datePublished" content="<?php echo $_review->getTime(false); ?>"><?php echo $_review->getTime(true); ?>
+      <div itemprop="itemReviewed" itemscope itemtype="http://schema.org/Product">
+        <span itemprop="name"><?php echo $this->getProduct()->getName(); ?></span>
+      </div>
+      <span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+        <span itemprop="ratingValue"><?php echo $_review->getStars(); ?></span>
+        <?php echo $this->__('Maximum Stars text', '<span itemprop="bestRating">5</span>'); ?>
+        <?php echo $this->__('Minimum Stars text', '<span itemprop="worstRating">1</span>'); ?>
+      </span>
+      <br/>
+      <h3><span itemprop="name"><?php echo $_review->getTitle(); ?></span></h3>
+      <span itemprop="reviewBody"><?php echo $_review->getContent(); ?></span>
+
+      <div itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop="name" content="<?php echo Mage::getStoreConfig('general/store_information/name'); ?>">
+      </div>
+    </div>
+    <hr/>
+  <?php endforeach; ?>
+
 </div>
 
 <div id="rate-it-cool-product-feedbacks-template" style="display:none;">

@@ -34,35 +34,34 @@
  */
 class RateItCool_ProductReviews_Block_Product_View_List extends Mage_Review_Block_Product_View
 {
-    protected $_forceHasOptions = false;
+  protected $_forceHasOptions = false;
 
-    public function getProductId()
-    {
-        return Mage::registry('product')->getId();
-    }
+  public function getProductId()
+  {
+    return Mage::registry('product')->getId();
+  }
 
-    public function getGpnValue()
-    {
-      if (Mage::registry('product')->getEan() != NULL) {
-        return Mage::registry('product')->getEan();
-      } else if (Mage::registry('product')->getSku() != NULL) {
-        return Mage::registry('product')->getSku();
-      } else {
-        return Mage::registry('product')->getId();
-      }
-    }
+  public function getGpnValue()
+  {
+    return $this->getProduct()->getGpnValue();
+  }
 
-    public function getGpnType()
-    {
-      if (Mage::registry('product')->getEan() != NULL) {
-        return 'ean';
-      } else {
-        return $this->_apiUserName;
-      }
-    }
+  public function getGpnType()
+  {
+    return $this->getProduct()->getGpnType();
+  }
 
-    public function getReviewUrl($id)
-    {
-        return Mage::getUrl('review/product/view', array('id' => $id));
+  public function getReviewUrl($id)
+  {
+    return Mage::getUrl('review/product/view', array('id' => $id));
+  }
+
+  public function getReviewsCollection()
+  {
+    if (null === $this->_reviewsCollection) {
+      $this->_reviewsCollection = Mage::getModel('productreviews/reviews')->getCollection($this->getProduct()->getGpnType(), $this->getProduct()->getGpnValue());
     }
+    return $this->_reviewsCollection;
+  }
+
 }

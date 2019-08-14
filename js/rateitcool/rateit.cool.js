@@ -288,7 +288,7 @@ var RateItCoolAPI = (function($){
             recommend: (_jQuery('form[name=' + _jQuery(this).attr('data-formname') + ']').find('[name=recommend]').is(':checked')?1:0)
           },
           destinationElement = _jQuery(this);
-console.log(gpntype,gpnvalue, language, feedbackElement);
+
       if (gpntype && gpnvalue && language && feedbackElement.title !== '' && feedbackElement.content !== '' && feedbackElement.stars > 0) {
         _jQuery.ajax({
           url : 'https://api.rateit.cool/feedback/' + gpntype + '/' + gpnvalue + '/' + language,

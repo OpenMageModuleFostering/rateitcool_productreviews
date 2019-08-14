@@ -14,6 +14,9 @@
           <product>RateItCool_ProductReviews_Model_Product</product>
         </rewrite>
       </catalog>
+      <productreviews>
+        <class>RateItCool_ProductReviews_Model_Review</class>
+      </productreviews>
       <sales>
         <rewrite>
           <order_item>RateItCool_ProductReviews_Model_Order_Item</order_item>
@@ -21,11 +24,11 @@
       </sales>
     </models>
     <resources>
-      <review_setup>
+      <productreviews_setup>
         <setup>
           <module>RateItCool_ProductReviews</module>
         </setup>
-      </review_setup>
+      </productreviews_setup>
     </resources>
     <blocks>
       <review>
@@ -47,30 +50,31 @@
       </updates>
     </layout>
     <routers>
-      <review>
+      <productreviews>
         <use>standard</use>
         <args>
           <module>RateItCool_ProductReviews</module>
-          <frontName>review</frontName>
+          <frontName>productreviews</frontName>
         </args>
-      </review>
+      </productreviews>
     </routers>
     <translate>
       <modules>
-        <RateItCool_ProductReviews>
+        <productreviews>
           <files>
             <default>RateItCool_ProductReviews.csv</default>
           </files>
-        </RateItCool_ProductReviews>
+        </productreviews>
       </modules>
     </translate>
   </frontend>
   <default>
     <catalog>
-      <RateItCool_ProductReviews>
+      <productreviews>
         <api_user>demo</api_user>
         <api_key>password</api_key>
-      </RateItCool_ProductReviews>
+        <server_api_key>password</server_api_key>
+      </productreviews>
     </catalog>
   </default>
 </config>
