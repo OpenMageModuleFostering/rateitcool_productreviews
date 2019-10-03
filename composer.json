@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/RateItCool_ProductReviews",
+    "name": "OpenMageModuleFostering\/RateItCool_ProductReviews",
     "type": "magento-module",
     "license": "MTL",
     "homepage": "",
     "description": "rateit.cool is a cloudbased service that allows all shops to collect & use product reviews together.",
     "authors": [
-    {
-        "name": "Thomas Gravel",
-        "email": "thomas.gravel@rateit.cool"
-    }
-],
+        {
+            "name": "Thomas Gravel",
+            "email": "thomas.gravel@rateit.cool"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
